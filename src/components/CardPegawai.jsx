@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
+
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -7,7 +8,7 @@ import { CardActionArea, CardActions } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import MenuItem from "@mui/material/MenuItem";
+
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -24,43 +25,18 @@ const style = {
   p: 4,
 };
 
-export default function CardPegawai() {
-  const [open, setOpen] = React.useState(false);
+function CardPegawai({
+  nama,
+  jalan,
+  kelurahan,
+  kecamatan,
+  kabupaten,
+  provinsi,
+  onClick,
+}) {
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const top100Films = [
-    { label: "The Shawshank Redemption", year: 1994 },
-    { label: "The Godfather", year: 1972 },
-    { label: "The Godfather: Part II", year: 1974 },
-    { label: "The Dark Knight", year: 2008 },
-    { label: "12 Angry Men", year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: "Pulp Fiction", year: 1994 },
-    {
-      label: "The Lord of the Rings: The Return of the King",
-      year: 2003,
-    },
-  ];
-
-  const currencies = [
-    {
-      value: "USD",
-      label: "$",
-    },
-    {
-      value: "EUR",
-      label: "€",
-    },
-    {
-      value: "BTC",
-      label: "฿",
-    },
-    {
-      value: "JPY",
-      label: "¥",
-    },
-  ];
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -73,25 +49,26 @@ export default function CardPegawai() {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard
+            {nama}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Jalan: Jl.Melati
+            Jalan: {jalan}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Kelurahan: Jl.Melati
+            Kelurahan: {kelurahan}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Kecamatan: Jl.Melati
+            Kecamatan: {kecamatan}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Kabupaten: Jl.Melati
+            Kabupaten: {kabupaten}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Provinsi: Jl.Melati
+            Provinsi: {provinsi}
           </Typography>
         </CardContent>
       </CardActionArea>
+
       <CardActions>
         {/* awal modal */}
         <div>
@@ -146,13 +123,7 @@ export default function CardPegawai() {
                       label="Kabupaten"
                       defaultValue="EUR"
                       helperText="Please select your currency"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
+                    ></TextField>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -162,19 +133,12 @@ export default function CardPegawai() {
                       label="Kecamatan"
                       defaultValue="EUR"
                       helperText="Please select your currency"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
+                    ></TextField>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <Autocomplete
                       disablePortal
                       id="combo-box-demo"
-                      options={top100Films}
                       sx={{ width: 240 }}
                       renderInput={(params) => (
                         <TextField {...params} label="Provinsi" />
@@ -182,7 +146,7 @@ export default function CardPegawai() {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Button>Ubah</Button>
+                    <Button variant="contained">Ubah</Button>
                   </Grid>
                 </Grid>
               </form>
@@ -190,10 +154,11 @@ export default function CardPegawai() {
           </Modal>
         </div>
         {/* akhir modal */}
-        <Button variant="outlined" color="error">
+        <Button variant="outlined" color="error" onClick={onClick}>
           Hapus
         </Button>
       </CardActions>
     </Card>
   );
 }
+export default CardPegawai;
