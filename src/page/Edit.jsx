@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  addPegawai,
-  getAllUser,
-  deletePegawai,
-} from "../features/pegawaiSlice";
+import { updatePegawai } from "../features/pegawaiSlice";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
-import CardPegawai from "../components/CardPegawai";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -20,7 +16,6 @@ import Paper from "@mui/material/Paper";
 import Autocomplete from "@mui/material/Autocomplete";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 
 const Home = () => {
   const [nama, setNama] = useState("");
@@ -33,41 +28,17 @@ const Home = () => {
   const [selectedProvinsi, setSelectedProvinsi] = useState("");
   const [selectedKabupaten, setSelectedKabupaten] = useState("");
 
+  const { id } = useParams();
+
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.users);
-  // const [id, setId] = useState();
-
-  useEffect(() => {
-    dispatch(getAllUser());
-  }, []);
 
   useEffect(() => {
     fetchProvinsi();
   }, []);
 
-  function handleAddPegawai(
-    nama,
-    jalan,
-    kelurahan,
-    kecamatan,
-    kabupaten,
-    provinsi,
-    event
-  ) {
-    dispatch(
-      addPegawai({
-        nama,
-        jalan,
-        kelurahan,
-        kecamatan,
-        kabupaten,
-        provinsi,
-      })
-    );
-    event.preventDefault();
-  }
-  function handleDeletePegawai(id) {
-    dispatch(deletePegawai(id));
+  function handleUpdatePegawai() {
+    dispatch(updatePegawai());
   }
 
   function fetchProvinsi() {
@@ -130,21 +101,9 @@ const Home = () => {
           sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
         >
           <Typography component="h1" variant="h4" align="center">
-            Tambah Pegawai
+            Ubah Data
           </Typography>
-          <form
-            onSubmit={(event) =>
-              handleAddPegawai(
-                nama,
-                jalan,
-                kelurahan,
-                kecamatan,
-                selectedKabupaten,
-                selectedProvinsi,
-                event
-              )
-            }
-          >
+          <form>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
@@ -253,7 +212,7 @@ const Home = () => {
               </Grid>
               <Grid item xs={12}>
                 <Button type="submit" variant="contained">
-                  Tambah
+                  Ubah
                 </Button>
               </Grid>
             </Grid>
@@ -261,38 +220,6 @@ const Home = () => {
         </Paper>
       </Container>
       {/* akhir form */}
-
-      <Grid
-        container
-        my={4}
-        p={4}
-        rowSpacing={1}
-        spacing={4}
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-      >
-        {users.map((item) => (
-          <Grid item xs={12} sm={6} md={3}>
-            <CardPegawai
-              key={item.id}
-              jalan={item.jalan}
-              kelurahan={
-                item?.kelurahan?.length > 1 ? item.kelurahan : "tidak ada data"
-              }
-              kecamatan={
-                item?.kecamatan?.length > 1 ? item.kecamatan : "tidak ada data"
-              }
-              kabupaten={
-                item?.kabupaten?.length > 1 ? item.kabupaten : "tidak ada data"
-              }
-              provinsi={
-                item?.provinsi?.length > 1 ? item.provinsi : "tidak ada data"
-              }
-              onClick={() => handleDeletePegawai(item.id)}
-              // onClick2={() => setId(item.id)}
-            />
-          </Grid>
-        ))}
-      </Grid>
     </div>
   );
 };

@@ -56,10 +56,19 @@ const usersSlice = createSlice({
       })
       .addCase(addPegawai.fulfilled, (state, action) => {
         state.users.push(action.payload.data);
+        window.location.reload();
       })
       .addCase(deletePegawai.fulfilled, (state, action) => {
         state.users = state.users.filter((item) => item.id !== action.payload);
         window.location.reload();
+      })
+      .addCase(updatePegawai.fulfilled, (state, action) => {
+        const index = state.users.findIndex(
+          (pegawai) => pegawai.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.users[index] = action.payload;
+        }
       });
   },
 });
